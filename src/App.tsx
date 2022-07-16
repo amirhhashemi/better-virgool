@@ -1,5 +1,11 @@
+import { RichTextEditor } from "./components/editor/RichTextEditor";
+
 function App() {
-  return <div className="bg-rose-200">Yo!</div>;
+  return (
+    <div dir="rtl">
+      <RichTextEditor />
+    </div>
+  );
 }
 
 export default App;
