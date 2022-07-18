@@ -23,6 +23,7 @@ export const CodeBlock = CodeBlockLowlight.extend({
       "pre",
       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
         "data-type": "code-block",
+        spellcheck: false,
         dir: "ltr",
       }),
       [
