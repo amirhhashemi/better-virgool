@@ -8,7 +8,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tiptap/extension-bubble-menu": "^2.0.0-beta.61",
     "@tiptap/extension-code-block-lowlight": "^2.0.0-beta.73",
     "@tiptap/extension-document": "^2.0.0-beta.17",
     "@tiptap/extension-heading": "^2.0.0-beta.29",
