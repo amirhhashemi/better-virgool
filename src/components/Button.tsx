@@ -22,7 +22,7 @@ export const Button = ({
     <button
       {...props}
       className={cn(
-        "rounded",
+        "rounded hover:bg-slate-900",
         active && "bg-rose-600",
         size === "sm" && "w-6 h-6 p-1 mx-[0.2rem]",
         size === "md" && "w-8 h-8 p-2 mx-[0.2rem]"

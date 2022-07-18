@@ -20,7 +20,7 @@ export const TitleEditor = () => {
     content: title,
     editorProps: {
       attributes: {
-        class: "prose prose-sm sm:prose-base mx-auto py-6",
+        class: "prose prose-sm sm:prose-base mx-auto py-8",
       },
     },
     extensions: [

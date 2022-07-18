@@ -16,7 +16,7 @@ export const RichTextEditor = () => {
     editorProps: {
       attributes: {
         class:
-          "mx-auto prose prose-sm sm:prose-base md:prose-md prose-stone prose-img:mx-auto prose-img:mb-2 prose-a:text-rose-500 prose-img:rounded prose-figcaption:text-center",
+          "mx-auto px-1 sm:px-2 pb-4 prose prose-sm sm:prose-base md:prose-md prose-stone prose-img:mx-auto prose-img:mb-2 prose-a:text-rose-500 prose-img:rounded prose-figcaption:text-center",
       },
     },
     extensions: [
@@ -34,9 +34,7 @@ export const RichTextEditor = () => {
   return (
     editor && (
       <div>
-        <div className="">
-          <TitleEditor />
-        </div>
+        <TitleEditor />
         <Toolbar editor={editor} />
         <div className="mt-6" />
         <EditorContent editor={editor} />
