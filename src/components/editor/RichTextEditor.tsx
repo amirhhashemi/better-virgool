@@ -1,4 +1,5 @@
 import Placeholder from "@tiptap/extension-placeholder";
+import CharacterCount from "@tiptap/extension-character-count";
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import { useEditorStore } from "../../global-stores/useEditorStore";
@@ -13,14 +14,9 @@ export const RichTextEditor = () => {
 
   const editor = useEditor({
     content: editorContent,
-    editorProps: {
-      attributes: {
-        class:
-          "mx-auto px-1 sm:px-2 pb-4 prose prose-sm sm:prose-base md:prose-md prose-stone prose-img:mx-auto prose-img:mb-2 prose-a:text-rose-500 prose-img:rounded prose-figcaption:text-center",
-      },
-    },
     extensions: [
       RichText,
+      CharacterCount,
       Placeholder.configure({
         placeholder: "یه چیزی بنویس...",
       }),
@@ -36,8 +32,12 @@ export const RichTextEditor = () => {
       <div>
         <TitleEditor />
         <Toolbar editor={editor} />
-        <div className="mt-6" />
-        <EditorContent editor={editor} />
+        <div className="mt-6 mx-auto px-1 sm:px-2 pb-4 prose prose-sm sm:prose-base md:prose-md prose-stone prose-img:mx-auto prose-img:mb-2 prose-a:text-rose-500 prose-img:rounded prose-figcaption:text-center">
+          <EditorContent editor={editor} />
+          <div className="text-gray-400">
+            {editor.storage.characterCount.words()} کلمه
+          </div>
+        </div>
       </div>
     )
   );
