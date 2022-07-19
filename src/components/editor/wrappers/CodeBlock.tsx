@@ -5,10 +5,12 @@ export const CodeBlockWrapper = ({
   extension,
 }: NodeViewProps) => {
   return (
-    <NodeViewWrapper as="pre" className="relative pt-8" data-type="code-block">
-      <NodeViewContent as="code" dir="ltr" />
+    <NodeViewWrapper className="relative" dir="ltr">
+      <pre spellCheck={false}>
+        <NodeViewContent as="code" />
+      </pre>
       <select
-        className="hljs absolute top-2 right-2"
+        className="hljs absolute top-2 right-2 text-sm"
         contentEditable={false}
         onChange={(event) => updateAttributes({ language: event.target.value })}
       >
