@@ -1,20 +1,19 @@
+import React from "react";
 import cn from "clsx";
 
-import { ReactNode } from "react";
-
 interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 export const ButtonGroup = ({
   children,
   className,
-  ...props
+  ...rest
 }: ButtonGroupProps) => {
-  const classes = cn(className, "mx-2");
+  const classes = cn("flex items-center", className);
 
   return (
-    <div {...props} className={classes}>
+    <div className={classes} {...rest}>
       {children}
     </div>
   );

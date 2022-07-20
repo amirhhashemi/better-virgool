@@ -1,34 +1,39 @@
-import React, { forwardRef, ForwardedRef } from "react";
+import React from "react";
 import cn from "clsx";
 
 type ButtonSize = "md" | "sm";
+type ButtonVariant = "toolbar";
 
 interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  icon?: React.ComponentType;
-  active?: boolean;
+  variant?: ButtonVariant;
+  icon?: React.ReactNode;
+  isActive?: boolean;
   size?: ButtonSize;
 }
 
-export const Button = forwardRef(
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { children, icon, size = "md", active, ...props }: ButtonProps,
-    ref: ForwardedRef<HTMLButtonElement>
+    { children, size = "md", variant = "toolbar", icon, isActive, ...rest },
+    ref
   ) => {
-    const Icon = icon;
+    const classes = cn(
+      "outline-none rounded font-bold",
+      "flex items-center justify-center ease-in-out",
+      "transition duration-200",
+      size === "sm" && "w-6 h-6 p-1",
+      size === "md" && "w-8 h-8 p-2",
+      variant === "toolbar" && [
+        isActive ? "bg-rose-500" : "bg-black",
+        "border-transparent hover:border-rose-500 hover:border",
+      ]
+    );
 
     return (
-      <button
-        {...props}
-        ref={ref}
-        className={cn(
-          "rounded hover:bg-slate-900",
-          active && "bg-rose-600",
-          size === "sm" && "w-6 h-6 p-1 mx-[0.2rem]",
-          size === "md" && "w-8 h-8 p-2 mx-[0.2rem]"
-        )}
-      >
-        {Icon && <Icon />}
-        {children}
+      <button ref={ref} className={classes} {...rest}>
+        <span className="flex items-center">
+          {icon && <span className="m-2 flex items-center">{icon}</span>}
+          {children}
+        </span>
       </button>
     );
   }
