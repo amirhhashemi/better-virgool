@@ -8,7 +8,6 @@ interface EditorStore {
   titleHtml: string;
   setTitleHtml: (title: string) => void;
   setContentHtml: (content: string) => void;
-  clear: () => void;
 }
 
 const LocalStorage: StateStorage = {
@@ -30,7 +29,6 @@ export const useEditorStore = create<EditorStore>()(
       contentHtml: "",
       setContentHtml: (contentHtml) => set({ contentHtml }),
       setTitleHtml: (titleHtml) => set({ titleHtml }),
-      clear: () => set({ contentHtml: "", titleHtml: "" }),
     }),
     {
       name: "editor",
