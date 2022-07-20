@@ -8,6 +8,7 @@ import { TextDirection } from "./TextDirection";
 import { Heading } from "./Heading";
 import { CodeBlock } from "./CodeBlock";
 import { Video } from "./Video";
+import { SmilieReplacer } from "./SmilieReplacer";
 
 export const RichText = Extension.create({
   name: "richText",
@@ -23,6 +24,7 @@ export const RichText = Extension.create({
       Underline,
       Figure,
       Video,
+      SmilieReplacer,
       TextDirection.configure({
         types: ["paragraph", "heading", "blockquote", "listItem"],
       }),
