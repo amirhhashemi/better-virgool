@@ -1,5 +1,3 @@
-import Compressor from "compressorjs";
-
 import {
   mergeAttributes,
   nodeInputRule,
@@ -8,7 +6,9 @@ import {
 } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 import { Selection, Plugin, PluginKey } from "prosemirror-state";
+
 import { FigureWrapper } from "../wrappers/Figure";
+import { compressImage } from "../../../utils/compressImage";
 
 export interface FigureOptions {
   HTMLAttributes: Record<string, any>;
@@ -191,30 +191,23 @@ export const Figure = Node.create<FigureOptions>({
               top: event.clientY,
             });
 
-            new Compressor(image, {
-              quality: 0.8,
-              success(result) {
-                const reader = new FileReader();
-                console.log("success");
+            compressImage(image, (result) => {
+              const reader = new FileReader();
 
-                reader.onload = (readerEvent) => {
-                  schema;
-                  const node = schema.nodes.figure.create({
-                    src: readerEvent.target?.result,
-                  });
+              reader.onload = (readerEvent) => {
+                schema;
+                const node = schema.nodes.figure.create({
+                  src: readerEvent.target?.result,
+                });
 
-                  if (coordinates && typeof coordinates.pos === "number") {
-                    const transaction = tr.insert(coordinates?.pos, node);
+                if (coordinates && typeof coordinates.pos === "number") {
+                  const transaction = tr.insert(coordinates?.pos, node);
 
-                    dispatch(transaction);
-                  }
-                };
+                  dispatch(transaction);
+                }
+              };
 
-                reader.readAsDataURL(result);
-              },
-              error(err) {
-                console.log("fileCompressionError:", err.message);
-              },
+              reader.readAsDataURL(result);
             });
 
             return true;
@@ -237,28 +230,21 @@ export const Figure = Node.create<FigureOptions>({
 
             event.preventDefault();
 
-            new Compressor(image, {
-              quality: 0.8,
-              success(result) {
-                const reader = new FileReader();
-                console.log("success");
+            compressImage(image, (result) => {
+              const reader = new FileReader();
 
-                reader.onload = (readerEvent) => {
-                  schema;
-                  const node = schema.nodes.figure.create({
-                    src: readerEvent.target?.result,
-                  });
+              reader.onload = (readerEvent) => {
+                schema;
+                const node = schema.nodes.figure.create({
+                  src: readerEvent.target?.result,
+                });
 
-                  const transaction = tr.replaceSelectionWith(node);
+                const transaction = tr.replaceSelectionWith(node);
 
-                  dispatch(transaction);
-                };
+                dispatch(transaction);
+              };
 
-                reader.readAsDataURL(result);
-              },
-              error(err) {
-                console.log("fileCompressionError:", err.message);
-              },
+              reader.readAsDataURL(result);
             });
 
             return true;

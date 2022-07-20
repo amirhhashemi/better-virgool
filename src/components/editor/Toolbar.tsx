@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { Editor } from "@tiptap/react";
 import { IconContext } from "react-icons";
 
+import { compressImage } from "../../utils/compressImage";
 import { Button } from "../Button";
 import { Input } from "../Input";
 import {
@@ -64,15 +65,7 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
 
     const file: File = e.target.files[0];
 
-    new Compressor(file, {
-      quality: 0.8,
-      success(result) {
-        setImage(result as File);
-      },
-      error(err) {
-        console.log("fileCompressionError:", err.message);
-      },
-    });
+    compressImage(file, (result) => setImage(result as File));
 
     if (imageInputRef.current) {
       imageInputRef.current.value = "";
