@@ -15,7 +15,12 @@ const LocalStorage: StateStorage = {
     return localStorage.getItem(name) || null;
   },
   setItem: _debounce(async (name, value) => {
-    localStorage.setItem(name, value);
+    const parsed = JSON.parse(value);
+
+    localStorage.setItem(
+      name,
+      JSON.stringify({ ...parsed, lastUpdate: new Date() })
+    );
   }, 1500),
   removeItem: async (name) => {
     localStorage.removeItem(name);
