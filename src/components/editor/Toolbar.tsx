@@ -13,16 +13,16 @@ import {
   Link,
   Code,
   Blockquote,
-  TextLeft,
-  TextRight,
+  TextLtr,
+  TextRtl,
   OrderedList,
   UnorderedList,
   ImageAdd,
+  VideoAdd,
   HorizontalRule,
   H1,
   H2,
   H3,
-  Video,
 } from "../../icons";
 import { useFileReader } from "../../hooks/useFileReader";
 import { ButtonGroup } from "../ButtonGroup";
@@ -98,13 +98,13 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
           <Button
             active={editor.isActive({ dir: "rtl" })}
             onClick={() => editor.chain().focus().setTextDirection("rtl").run()}
-            icon={TextRight}
+            icon={TextRtl}
           />
 
           <Button
             active={editor.isActive({ dir: "ltr" })}
             onClick={() => editor.chain().focus().setTextDirection("ltr").run()}
-            icon={TextLeft}
+            icon={TextLtr}
           />
         </ButtonGroup>
 
@@ -141,7 +141,7 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
                 onChange={insertVideo}
                 className="hidden"
               />
-              <Video />
+              <VideoAdd />
             </label>
           </Button>
         </ButtonGroup>
