@@ -1,0 +1,16 @@
+.ProseMirror li[dir="rtl"] {
+  text-align: right;
+}
+
+.ProseMirror li[dir="ltr"] {
+  text-align: left;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before,
+h1.is-editor-empty:first-child::before {
+  @apply pointer-events-none text-gray-400 content-[attr(data-placeholder)] h-0 float-right;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
