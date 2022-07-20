@@ -2,6 +2,7 @@ import Compressor from "compressorjs";
 
 import { useState, useRef } from "react";
 import { Editor } from "@tiptap/react";
+import { IconContext } from "react-icons";
 
 import { Button } from "../Button";
 import { Input } from "../Input";
@@ -92,136 +93,138 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
   };
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-x-3 bg-black text-white p-2 sticky top-0 z-50">
-      <ButtonGroup>
-        <Button
-          isActive={editor.isActive({ dir: "rtl" })}
-          onClick={() => editor.chain().focus().setTextDirection("rtl").run()}
-          icon={<TextRtl />}
-        />
+    <IconContext.Provider value={{ size: "1.2rem" }}>
+      <div className="flex flex-wrap items-center justify-center gap-x-3 bg-black text-white p-2 sticky top-0 z-50">
+        <ButtonGroup>
+          <Button
+            isActive={editor.isActive({ dir: "rtl" })}
+            onClick={() => editor.chain().focus().setTextDirection("rtl").run()}
+            icon={<TextRtl />}
+          />
 
-        <Button
-          isActive={editor.isActive({ dir: "ltr" })}
-          onClick={() => editor.chain().focus().setTextDirection("ltr").run()}
-          icon={<TextLtr />}
-        />
-      </ButtonGroup>
+          <Button
+            isActive={editor.isActive({ dir: "ltr" })}
+            onClick={() => editor.chain().focus().setTextDirection("ltr").run()}
+            icon={<TextLtr />}
+          />
+        </ButtonGroup>
 
-      <ButtonGroup>
-        <Button
-          isActive={editor.isActive("horizontalRule")}
-          onClick={() =>
-            editor.chain().focus().setHorizontalRule().enter().run()
-          }
-          icon={<HorizontalRule />}
-        />
+        <ButtonGroup>
+          <Button
+            isActive={editor.isActive("horizontalRule")}
+            onClick={() =>
+              editor.chain().focus().setHorizontalRule().enter().run()
+            }
+            icon={<HorizontalRule />}
+          />
 
-        <Button>
-          <label htmlFor="file-uploader">
-            <Input
-              ref={imageInputRef}
-              id="file-uploader"
-              type="file"
-              accept="image/*"
-              onChange={insertImage}
-              className="hidden"
-            />
-            <ImageAdd />
-          </label>
-        </Button>
+          <Button>
+            <label htmlFor="file-uploader">
+              <Input
+                ref={imageInputRef}
+                id="file-uploader"
+                type="file"
+                accept="image/*"
+                onChange={insertImage}
+                className="hidden"
+              />
+              <ImageAdd />
+            </label>
+          </Button>
 
-        <Button>
-          <label htmlFor="video-uploader">
-            <Input
-              ref={videoInputRef}
-              id="video-uploader"
-              type="file"
-              accept="video/*"
-              onChange={insertVideo}
-              className="hidden"
-            />
-            <VideoAdd />
-          </label>
-        </Button>
-      </ButtonGroup>
+          <Button>
+            <label htmlFor="video-uploader">
+              <Input
+                ref={videoInputRef}
+                id="video-uploader"
+                type="file"
+                accept="video/*"
+                onChange={insertVideo}
+                className="hidden"
+              />
+              <VideoAdd />
+            </label>
+          </Button>
+        </ButtonGroup>
 
-      <ButtonGroup>
-        <Button
-          isActive={editor.isActive("codeBlock")}
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-          icon={<Code />}
-        />
+        <ButtonGroup>
+          <Button
+            isActive={editor.isActive("codeBlock")}
+            onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+            icon={<Code />}
+          />
 
-        <Button
-          isActive={editor.isActive("bulletList")}
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          icon={<UnorderedList />}
-        />
+          <Button
+            isActive={editor.isActive("bulletList")}
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            icon={<UnorderedList />}
+          />
 
-        <Button
-          isActive={editor.isActive("orderedList")}
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          icon={<OrderedList />}
-        />
+          <Button
+            isActive={editor.isActive("orderedList")}
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            icon={<OrderedList />}
+          />
 
-        <Button
-          isActive={editor.isActive("blockquote")}
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          icon={<Blockquote />}
-        />
-      </ButtonGroup>
+          <Button
+            isActive={editor.isActive("blockquote")}
+            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            icon={<Blockquote />}
+          />
+        </ButtonGroup>
 
-      <ButtonGroup>
-        <Button
-          isActive={editor.isActive("heading", { level: 2 })}
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
-          icon={<H1 />}
-        />
+        <ButtonGroup>
+          <Button
+            isActive={editor.isActive("heading", { level: 2 })}
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
+            icon={<H1 />}
+          />
 
-        <Button
-          isActive={editor.isActive("heading", { level: 3 })}
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 3 }).run()
-          }
-          icon={<H2 />}
-        />
+          <Button
+            isActive={editor.isActive("heading", { level: 3 })}
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 3 }).run()
+            }
+            icon={<H2 />}
+          />
 
-        <Button
-          isActive={editor.isActive("heading", { level: 4 })}
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 4 }).run()
-          }
-          icon={<H3 />}
-        />
-      </ButtonGroup>
+          <Button
+            isActive={editor.isActive("heading", { level: 4 })}
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 4 }).run()
+            }
+            icon={<H3 />}
+          />
+        </ButtonGroup>
 
-      <ButtonGroup>
-        <Button
-          isActive={editor.isActive("bold")}
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          icon={<Bold />}
-        />
+        <ButtonGroup>
+          <Button
+            isActive={editor.isActive("bold")}
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            icon={<Bold />}
+          />
 
-        <Button
-          isActive={editor.isActive("italic")}
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          icon={<Italic />}
-        />
+          <Button
+            isActive={editor.isActive("italic")}
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            icon={<Italic />}
+          />
 
-        <Button
-          isActive={editor.isActive("underline")}
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
-          icon={<Underline />}
-        />
+          <Button
+            isActive={editor.isActive("underline")}
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
+            icon={<Underline />}
+          />
 
-        <Button
-          isActive={editor.isActive("strike")}
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          icon={<Strikethrough />}
-        />
-      </ButtonGroup>
-    </div>
+          <Button
+            isActive={editor.isActive("strike")}
+            onClick={() => editor.chain().focus().toggleStrike().run()}
+            icon={<Strikethrough />}
+          />
+        </ButtonGroup>
+      </div>
+    </IconContext.Provider>
   );
 };
