@@ -142,12 +142,6 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
 
         <ButtonGroup>
           <Button
-            isActive={editor.isActive("codeBlock")}
-            onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-            icon={<Code />}
-          />
-
-          <Button
             isActive={editor.isActive("bulletList")}
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             icon={<UnorderedList />}
@@ -157,6 +151,12 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
             isActive={editor.isActive("orderedList")}
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
             icon={<OrderedList />}
+          />
+
+          <Button
+            isActive={editor.isActive("codeBlock")}
+            onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+            icon={<Code />}
           />
 
           <Button
