@@ -1,5 +1,5 @@
 import { Node, nodeInputRule } from "@tiptap/react";
-import { Plugin, PluginKey } from "prosemirror-state";
+import { Plugin, PluginKey, TextSelection } from "prosemirror-state";
 
 export interface VideoOptions {
   HTMLAttributes: Record<string, any>;
@@ -53,8 +53,33 @@ export const Video = Node.create({
     return {
       setVideo:
         ({ src }) =>
-        ({ commands }) =>
-          commands.insertContent(`<video controls="true" src="${src}" />`),
+        ({ chain }) =>
+          chain()
+            .insertContent(`<video controls="true" src="${src}" />`)
+            .command(({ tr, dispatch }) => {
+              if (dispatch) {
+                const { $to } = tr.selection;
+                const posAfter = $to.end();
+
+                if ($to.nodeAfter) {
+                  tr.setSelection(TextSelection.create(tr.doc, $to.pos));
+                } else {
+                  // add node after horizontal rule if it’s the end of the document
+                  const node =
+                    $to.parent.type.contentMatch.defaultType?.create();
+
+                  if (node) {
+                    tr.insert(posAfter, node);
+                    tr.setSelection(TextSelection.create(tr.doc, posAfter));
+                  }
+                }
+
+                tr.scrollIntoView();
+              }
+
+              return true;
+            })
+            .run(),
     };
   },
 
