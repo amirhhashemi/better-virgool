@@ -1,25 +1,27 @@
 import cn from "clsx";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { NodeViewWrapper, NodeViewProps, NodeViewContent } from "@tiptap/react";
 
 import { X } from "../../../icons";
 
 export const FigureWrapper = ({ node, deleteNode }: NodeViewProps) => {
+  const uploaded = useRef(false);
   const [uploading, setUploading] = useState(false);
-  const { src } = node.attrs;
 
   useEffect(() => {
     let timer: number;
-    if (!src) {
+
+    if (!uploaded.current) {
       setUploading(true);
       timer = setTimeout(() => {
+        uploaded.current = true;
         setUploading(false);
       }, 1500);
     }
 
     return () => clearTimeout(timer);
-  }, [src]);
+  }, [uploading]);
 
   return (
     <NodeViewWrapper as="figure" className="relative" data-type="figure">
