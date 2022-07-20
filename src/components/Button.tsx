@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, ForwardedRef } from "react";
 import cn from "clsx";
 
 type ButtonSize = "md" | "sm";
@@ -9,27 +9,27 @@ interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
 }
 
-export const Button = ({
-  children,
-  icon,
-  size = "md",
-  active,
-  ...props
-}: ButtonProps) => {
-  const Icon = icon;
+export const Button = forwardRef(
+  (
+    { children, icon, size = "md", active, ...props }: ButtonProps,
+    ref: ForwardedRef<HTMLButtonElement>
+  ) => {
+    const Icon = icon;
 
-  return (
-    <button
-      {...props}
-      className={cn(
-        "rounded hover:bg-slate-900",
-        active && "bg-rose-600",
-        size === "sm" && "w-6 h-6 p-1 mx-[0.2rem]",
-        size === "md" && "w-8 h-8 p-2 mx-[0.2rem]"
-      )}
-    >
-      {Icon && <Icon />}
-      {children}
-    </button>
-  );
-};
+    return (
+      <button
+        {...props}
+        ref={ref}
+        className={cn(
+          "rounded hover:bg-slate-900",
+          active && "bg-rose-600",
+          size === "sm" && "w-6 h-6 p-1 mx-[0.2rem]",
+          size === "md" && "w-8 h-8 p-2 mx-[0.2rem]"
+        )}
+      >
+        {Icon && <Icon />}
+        {children}
+      </button>
+    );
+  }
+);
