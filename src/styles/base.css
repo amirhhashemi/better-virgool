@@ -14,3 +14,7 @@ h1.is-editor-empty:first-child::before {
 .ProseMirror:focus {
   outline: none;
 }
+
+.ProseMirror-selectednode {
+  @apply border-4 rounded border-rose-400;
+}
