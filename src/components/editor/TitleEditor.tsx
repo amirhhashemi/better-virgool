@@ -43,7 +43,7 @@ export const TitleEditor = () => {
 
   return (
     editor && (
-      <div className="prose prose-sm sm:prose-base mx-auto py-8">
+      <div className="prose prose-sm sm:prose-base mx-auto py-8 px-1 sm:px-2">
         <EditorContent editor={editor} />
         <div className="text-gray-400">
           {editor.storage.characterCount.characters()}/{limit} کاراکتر
