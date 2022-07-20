@@ -14,7 +14,7 @@ export {
   TbListNumbers as OrderedList,
   TbList as UnorderedList,
   TbX as X,
-  TbSeparator as HorizontalRule,
+  TbLineDashed as HorizontalRule,
   TbVideoPlus as VideoAdd,
   TbCameraPlus as ImageAdd,
 } from "react-icons/tb";
