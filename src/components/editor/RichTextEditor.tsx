@@ -42,7 +42,7 @@ export const RichTextEditor = () => {
           )}
         >
           <EditorContent editor={editor} />
-          <div className="text-gray-400">
+          <div className="text-gray-400 float-left">
             {editor.storage.characterCount.words()} کلمه
           </div>
         </div>
