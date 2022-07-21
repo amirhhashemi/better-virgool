@@ -10,7 +10,7 @@ import { Selection, Plugin, PluginKey } from "prosemirror-state";
 import { FigureWrapper } from "../wrappers/Figure";
 import { compressImage } from "../../../utils/compressImage";
 
-export interface FigureOptions {
+interface FigureOptions {
   HTMLAttributes: Record<string, any>;
   maxSize: number;
   onError: (err: Error) => void;
@@ -19,11 +19,7 @@ export interface FigureOptions {
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     figure: {
-      setFigure: (options: {
-        src: string;
-        alt?: string;
-        caption?: string;
-      }) => ReturnType;
+      setFigure: (options: { src: string; alt?: string }) => ReturnType;
     };
   }
 }
@@ -95,14 +91,13 @@ export const Figure = Node.create<FigureOptions>({
   addCommands() {
     return {
       setFigure:
-        ({ caption, ...attrs }) =>
+        (attrs) =>
         ({ chain }) => {
           return (
             chain()
               .insertContent({
                 type: this.name,
                 attrs,
-                content: caption ? [{ type: "text", text: caption }] : [],
               })
               // set cursor at end of caption field
               .command(({ tr, commands }) => {
