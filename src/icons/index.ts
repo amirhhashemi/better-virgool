@@ -17,4 +17,6 @@ export {
   TbLineDashed as HorizontalRule,
   TbVideoPlus as VideoAdd,
   TbCameraPlus as ImageAdd,
+  TbSuperscript as Superscript,
+  TbSubscript as Subscript,
 } from "react-icons/tb";

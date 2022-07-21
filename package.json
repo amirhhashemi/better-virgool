@@ -14,6 +14,8 @@
     "@tiptap/extension-heading": "^2.0.0-beta.29",
     "@tiptap/extension-link": "^2.0.0-beta.43",
     "@tiptap/extension-placeholder": "^2.0.0-beta.53",
+    "@tiptap/extension-subscript": "^2.0.0-beta.13",
+    "@tiptap/extension-superscript": "^2.0.0-beta.13",
     "@tiptap/extension-text": "^2.0.0-beta.17",
     "@tiptap/extension-underline": "^2.0.0-beta.25",
     "@tiptap/react": "^2.0.0-beta.114",

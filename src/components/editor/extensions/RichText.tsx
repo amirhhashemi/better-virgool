@@ -2,6 +2,8 @@ import toast from "react-hot-toast";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
+import Superscript from "@tiptap/extension-superscript";
+import Subscript from "@tiptap/extension-subscript";
 
 import { Extension } from "@tiptap/core";
 import { Figure } from "./Figure";
@@ -22,6 +24,8 @@ export const RichText = Extension.create({
       CodeBlock,
       Heading,
       Underline,
+      Superscript,
+      Subscript,
       Figure.configure({
         onError: (e) => toast.error(e.message),
       }),

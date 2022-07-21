@@ -21,6 +21,8 @@ import {
   UnorderedList,
   ImageAdd,
   HorizontalRule,
+  Superscript,
+  Subscript,
   H1,
   H2,
   H3,
@@ -163,6 +165,18 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
         </ButtonGroup>
 
         <ButtonGroup>
+          <Button
+            isActive={editor.isActive("superscript")}
+            onClick={() => editor.chain().focus().toggleSuperscript().run()}
+            icon={<Superscript />}
+          />
+
+          <Button
+            isActive={editor.isActive("subscript")}
+            onClick={() => editor.chain().focus().toggleSubscript().run()}
+            icon={<Subscript />}
+          />
+
           <Button
             isActive={editor.isActive("bold")}
             onClick={() => editor.chain().focus().toggleBold().run()}
