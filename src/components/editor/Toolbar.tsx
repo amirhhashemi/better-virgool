@@ -1,4 +1,4 @@
-import Compressor from "compressorjs";
+import toast from "react-hot-toast";
 
 import { useState, useRef } from "react";
 import { Editor } from "@tiptap/react";
@@ -56,7 +56,7 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
     const file: File = e.target.files[0];
 
     if (file.size > maxImageSize) {
-      console.error(
+      toast.error(
         `حجم تصاویر حداکثر میتواند ${maxImageSize / 1000000} مگابایت باشد`
       );
       return;

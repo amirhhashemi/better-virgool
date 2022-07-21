@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
@@ -21,7 +22,9 @@ export const RichText = Extension.create({
       CodeBlock,
       Heading,
       Underline,
-      Figure,
+      Figure.configure({
+        onError: (e) => toast.error(e.message),
+      }),
       SmilieReplacer,
       TextDirection.configure({
         types: ["paragraph", "heading", "blockquote", "listItem"],
