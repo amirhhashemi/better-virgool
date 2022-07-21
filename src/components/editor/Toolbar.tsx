@@ -20,7 +20,6 @@ import {
   OrderedList,
   UnorderedList,
   ImageAdd,
-  VideoAdd,
   HorizontalRule,
   H1,
   H2,
@@ -45,18 +44,8 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
         .run();
     },
   });
-  const { setFile: setVideo } = useFileReader({
-    onLoad: async (result) => {
-      editor
-        .chain()
-        .focus()
-        .setVideo({ src: result as string })
-        .run();
-    },
-  });
 
   const imageInputRef = useRef<HTMLInputElement | null>(null);
-  const videoInputRef = useRef<HTMLInputElement | null>(null);
 
   const insertImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) {
@@ -69,19 +58,6 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
 
     if (imageInputRef.current) {
       imageInputRef.current.value = "";
-    }
-  };
-
-  const insertVideo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files?.length) {
-      return;
-    }
-    const file: File = e.target.files[0];
-
-    setVideo(file);
-
-    if (videoInputRef.current) {
-      videoInputRef.current.value = "";
     }
   };
 
@@ -122,20 +98,6 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
                 className="hidden"
               />
               <ImageAdd />
-            </label>
-          </Button>
-
-          <Button>
-            <label htmlFor="video-uploader">
-              <Input
-                ref={videoInputRef}
-                id="video-uploader"
-                type="file"
-                accept="video/*"
-                onChange={insertVideo}
-                className="hidden"
-              />
-              <VideoAdd />
             </label>
           </Button>
         </ButtonGroup>
