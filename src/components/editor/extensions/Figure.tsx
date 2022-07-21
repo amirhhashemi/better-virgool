@@ -12,6 +12,8 @@ import { compressImage } from "../../../utils/compressImage";
 
 export interface FigureOptions {
   HTMLAttributes: Record<string, any>;
+  maxSize: number;
+  onError: (err: Error) => void;
 }
 
 declare module "@tiptap/core" {
@@ -27,6 +29,7 @@ declare module "@tiptap/core" {
 }
 
 export const inputRegex = /!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\)/;
+export const maxSize = 3000000;
 
 export const Figure = Node.create<FigureOptions>({
   name: "figure",
@@ -40,6 +43,8 @@ export const Figure = Node.create<FigureOptions>({
   addOptions() {
     return {
       HTMLAttributes: {},
+      maxSize,
+      onError: (err: Error) => console.error(err),
     };
   },
 
@@ -167,6 +172,8 @@ export const Figure = Node.create<FigureOptions>({
   },
 
   addProseMirrorPlugins() {
+    const { options } = this;
+
     return [
       new Plugin({
         key: new PluginKey("figureDropPlugin"),
@@ -183,6 +190,17 @@ export const Figure = Node.create<FigureOptions>({
             );
 
             if (!image) return false;
+
+            if (image.size > options.maxSize) {
+              options.onError(
+                new Error(
+                  `حجم تصاویر حداکثر میتواند ${
+                    options.maxSize / 1000000
+                  } مگابایت باشد`
+                )
+              );
+              return true;
+            }
 
             event.preventDefault();
 
@@ -227,6 +245,19 @@ export const Figure = Node.create<FigureOptions>({
             );
 
             if (!image) return false;
+
+            console.log("image: ", image);
+
+            if (image.size > options.maxSize) {
+              options.onError(
+                new Error(
+                  `حجم تصاویر حداکثر میتواند ${
+                    options.maxSize / 1000000
+                  } مگابایت باشد`
+                )
+              );
+              return true;
+            }
 
             event.preventDefault();
 

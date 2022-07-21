@@ -27,6 +27,7 @@ import {
 } from "../../icons";
 import { useFileReader } from "../../hooks/useFileReader";
 import { ButtonGroup } from "../ButtonGroup";
+import { maxSize as maxImageSize } from "./extensions/Figure";
 
 interface ToolbarProps {
   editor: Editor;
@@ -53,6 +54,13 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
     }
 
     const file: File = e.target.files[0];
+
+    if (file.size > maxImageSize) {
+      console.error(
+        `حجم تصاویر حداکثر میتواند ${maxImageSize / 1000000} مگابایت باشد`
+      );
+      return;
+    }
 
     compressImage(file, (result) => setImage(result as File));
 
