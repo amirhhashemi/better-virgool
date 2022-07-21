@@ -3,7 +3,7 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
-    <div dir="rtl">
+    <div>
       <RichTextEditor />
       <Toaster
         position="bottom-right"
