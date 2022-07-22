@@ -19,4 +19,5 @@ export {
   TbCameraPlus as ImageAdd,
   TbSuperscript as Superscript,
   TbSubscript as Subscript,
+  TbTrash as Trash,
 } from "react-icons/tb";
