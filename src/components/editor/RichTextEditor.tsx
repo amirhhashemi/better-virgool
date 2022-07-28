@@ -3,18 +3,21 @@ import Placeholder from "@tiptap/extension-placeholder";
 import CharacterCount from "@tiptap/extension-character-count";
 
 import { useEditor, EditorContent } from "@tiptap/react";
-import { useEditorStore } from "../../global-stores/useEditorStore";
+import { useEffect } from "react";
 
+import {
+  useEditorStore,
+  useEditorHydration,
+} from "../../global-stores/useEditorStore";
 import { RichText } from "./extensions/RichText";
 import { Toolbar } from "./Toolbar";
 import { TitleEditor } from "./TitleEditor";
 
 export const RichTextEditor = () => {
   const setEditorContent = useEditorStore((s) => s.setContentHtml);
-  const editorContent = useEditorStore((s) => s.contentHtml);
+  const hydrated = useEditorHydration();
 
   const editor = useEditor({
-    content: editorContent,
     extensions: [
       RichText,
       CharacterCount,
@@ -27,6 +30,12 @@ export const RichTextEditor = () => {
       setEditorContent(html);
     },
   });
+
+  useEffect(() => {
+    if (hydrated) {
+      editor?.commands.setContent(useEditorStore.getState().contentHtml);
+    }
+  }, [hydrated]);
 
   return (
     editor && (

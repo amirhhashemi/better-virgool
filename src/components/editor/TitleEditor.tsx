@@ -5,22 +5,25 @@ import CharacterCount from "@tiptap/extension-character-count";
 
 import { Document } from "@tiptap/extension-document";
 import { useEditor, EditorContent } from "@tiptap/react";
+import { useEffect } from "react";
 
 import { TextDirection } from "./extensions/TextDirection";
-import { useEditorStore } from "../../global-stores/useEditorStore";
+import {
+  useEditorHydration,
+  useEditorStore,
+} from "../../global-stores/useEditorStore";
 
 const limit = 100;
 
 export const TitleEditor = () => {
   const setTitle = useEditorStore((s) => s.setTitleHtml);
-  const title = useEditorStore((s) => s.titleHtml);
+  const hydrated = useEditorHydration();
 
   const TitleDocument = Document.extend({
     content: "heading",
   });
 
   const editor = useEditor({
-    content: title,
     extensions: [
       TitleDocument,
       Text,
@@ -40,6 +43,12 @@ export const TitleEditor = () => {
       setTitle(html);
     },
   });
+
+  useEffect(() => {
+    if (hydrated) {
+      editor?.commands.setContent(useEditorStore.getState().titleHtml);
+    }
+  }, [hydrated]);
 
   return (
     editor && (

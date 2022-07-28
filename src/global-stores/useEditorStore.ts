@@ -1,29 +1,30 @@
 import create from "zustand";
 import _debounce from "lodash.debounce";
 
+import { useState, useEffect } from "react";
 import { persist, StateStorage } from "zustand/middleware";
+import { get, set, del } from "idb-keyval";
 
 interface EditorStore {
   contentHtml: string;
   titleHtml: string;
   setTitleHtml: (title: string) => void;
   setContentHtml: (content: string) => void;
+  _hasHydrated: boolean;
+  setHasHydrated: (state: boolean) => void;
 }
 
-const LocalStorage: StateStorage = {
+const IDBStorage: StateStorage = {
   getItem: async (name) => {
-    return localStorage.getItem(name) || null;
+    return (await get(name)) || null;
   },
   setItem: _debounce(async (name, value) => {
     const parsed = JSON.parse(value);
-
-    localStorage.setItem(
-      name,
-      JSON.stringify({ ...parsed, lastUpdate: new Date() })
-    );
+    const newValue = JSON.stringify({ ...parsed, lastUpdate: new Date() });
+    await set(name, newValue);
   }, 1500),
   removeItem: async (name) => {
-    localStorage.removeItem(name);
+    await del(name);
   },
 };
 
@@ -34,10 +35,41 @@ export const useEditorStore = create<EditorStore>()(
       contentHtml: "",
       setContentHtml: (contentHtml) => set({ contentHtml }),
       setTitleHtml: (titleHtml) => set({ titleHtml }),
+      _hasHydrated: false,
+      setHasHydrated: (state) => {
+        set({
+          _hasHydrated: state,
+        });
+      },
     }),
     {
       name: "editor",
-      getStorage: () => LocalStorage,
+      getStorage: () => IDBStorage,
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
+      partialize: (s) => ({
+        titleHtml: s.titleHtml,
+        contentHtml: s.contentHtml,
+      }),
     }
   )
 );
+
+export const useEditorHydration = () => {
+  const [hydrated, setHydrated] = useState(useEditorStore.persist.hasHydrated);
+
+  useEffect(() => {
+    const unsubFinishHydration = useEditorStore.persist.onFinishHydration(() =>
+      setHydrated(true)
+    );
+
+    setHydrated(useEditorStore.persist.hasHydrated());
+
+    return () => {
+      unsubFinishHydration();
+    };
+  }, []);
+
+  return hydrated;
+};

@@ -22,6 +22,7 @@
     "@tiptap/starter-kit": "^2.0.0-beta.191",
     "clsx": "^1.2.1",
     "compressorjs": "^1.1.1",
+    "idb-keyval": "^6.2.0",
     "lodash.debounce": "^4.0.8",
     "lowlight": "^2.6.1",
     "prosemirror-state": "^1.4.1",
