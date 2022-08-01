@@ -46,7 +46,11 @@ export const TitleEditor = () => {
 
   useEffect(() => {
     if (hydrated) {
-      editor?.commands.setContent(useEditorStore.getState().titleHtml);
+      editor
+        ?.chain()
+        .setContent(useEditorStore.getState().titleHtml)
+        .focus()
+        .run();
     }
   }, [hydrated]);
 
