@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import * as Popover from "@radix-ui/react-popover";
 
 import { useState, useRef } from "react";
 import { Editor } from "@tiptap/react";
@@ -26,6 +27,7 @@ import {
   H1,
   H2,
   H3,
+  Check,
 } from "../../icons";
 import { useFileReader } from "../../hooks/useFileReader";
 import { ButtonGroup } from "../ButtonGroup";
@@ -35,9 +37,75 @@ interface ToolbarProps {
   editor: Editor;
 }
 
+const ToolbarLinkToggler = ({ editor }: { editor: Editor }) => {
+  const [open, setOpen] = useState(false);
+  const [link, setLink] = useState<string | null>(null);
+  const setLinkCommand = () => {
+    if (link) {
+      editor
+        .chain()
+        .focus()
+        .setLink({ href: link })
+        .setTextSelection(editor.state.selection.to)
+        .run();
+    }
+  };
+
+  return (
+    <Popover.Root
+      open={open}
+      onOpenChange={(openning) => {
+        if (!openning) {
+          setOpen(openning);
+          setLink(null);
+        }
+
+        if (openning) {
+          if (editor.isActive("link")) {
+            editor
+              .chain()
+              .focus()
+              .unsetMark("link", { extendEmptyMarkRange: true })
+              .run();
+          } else if (!editor.state.selection.empty) {
+            setOpen(true);
+          }
+        }
+      }}
+    >
+      <Popover.Trigger asChild>
+        <Button isActive={editor.isActive("link")} icon={<Link />} />
+      </Popover.Trigger>
+      <Popover.Content>
+        <div className="relative z-50">
+          <input
+            dir="ltr"
+            type="text"
+            value={link || ""}
+            onChange={(e) => setLink(e.target.value)}
+            className="w-full py-3 pl-2 pr-16 text-sm text-black border-2 border-gray-200 rounded-lg"
+            onKeyDown={(e) => {
+              if (link && e.key === "Enter") {
+                setLinkCommand();
+              }
+            }}
+            placeholder="لینک"
+          />
+          <button
+            className="absolute p-1 text-white -translate-y-1/2 bg-green-500 rounded-full top-1/2 right-4"
+            onClick={() => {
+              setLinkCommand();
+            }}
+          >
+            <Check />
+          </button>
+        </div>
+      </Popover.Content>
+    </Popover.Root>
+  );
+};
+
 export const Toolbar = ({ editor }: ToolbarProps) => {
-  const [linkOpen, setLinkOpen] = useState(false);
-  const [link, setLink] = useState<string>("");
   const { setFile: setImage } = useFileReader({
     onLoad: async (result) => {
       editor
@@ -200,6 +268,8 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
             onClick={() => editor.chain().focus().toggleStrike().run()}
             icon={<Strikethrough />}
           />
+
+          <ToolbarLinkToggler editor={editor} />
         </ButtonGroup>
       </div>
     </IconContext.Provider>

@@ -20,4 +20,5 @@ export {
   TbSuperscript as Superscript,
   TbSubscript as Subscript,
   TbTrash as Trash,
+  TbCheck as Check,
 } from "react-icons/tb";

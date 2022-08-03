@@ -4,6 +4,7 @@ import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
 import Superscript from "@tiptap/extension-superscript";
 import Subscript from "@tiptap/extension-subscript";
+import BubbleMenu from "@tiptap/extension-bubble-menu";
 
 import { Extension } from "@tiptap/core";
 import { Figure } from "./Figure";
@@ -21,6 +22,7 @@ export const RichText = Extension.create({
         heading: false,
         codeBlock: false,
       }),
+      BubbleMenu,
       CodeBlock,
       Heading,
       Underline,
@@ -33,7 +35,9 @@ export const RichText = Extension.create({
       TextDirection.configure({
         types: ["paragraph", "heading", "blockquote", "listItem"],
       }),
-      Link.configure({ openOnClick: false }),
+      Link.extend({
+        inclusive: false,
+      }).configure({ openOnClick: false }),
     ];
   },
 });
