@@ -80,12 +80,12 @@ const ToolbarLinkToggler = ({ editor }: { editor: Editor }) => {
         <div className="relative z-50">
           <input
             dir="ltr"
-            type="text"
             value={link || ""}
             onChange={(e) => setLink(e.target.value)}
             className="w-full py-3 pl-2 pr-16 text-sm text-black border-2 border-gray-200 rounded-lg"
             onKeyDown={(e) => {
               if (link && e.key === "Enter") {
+                e.preventDefault();
                 setLinkCommand();
               }
             }}
