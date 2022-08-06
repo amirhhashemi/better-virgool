@@ -5,10 +5,9 @@ import {
   Node,
 } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
-import { Selection, Plugin, PluginKey } from "prosemirror-state";
+import { Selection } from "prosemirror-state";
 
 import { FigureWrapper } from "../wrappers/Figure";
-import { compressImage } from "../../../utils/compressImage";
 
 interface FigureOptions {
   HTMLAttributes: Record<string, any>;
@@ -161,120 +160,6 @@ export const Figure = Node.create<FigureOptions>({
           const [, src, alt] = match;
 
           return { src, alt };
-        },
-      }),
-    ];
-  },
-
-  addProseMirrorPlugins() {
-    const { options } = this;
-
-    return [
-      new Plugin({
-        key: new PluginKey("figureDropPlugin"),
-        props: {
-          handleDrop(view, event) {
-            const {
-              state: { schema, tr },
-              dispatch,
-            } = view;
-            if (!event?.dataTransfer?.files.length) return false;
-
-            const image = Array.from(event.dataTransfer.files).find((file) =>
-              /image/i.test(file.type)
-            );
-
-            if (!image) return false;
-
-            if (image.size > options.maxSize) {
-              options.onError(
-                new Error(
-                  `حجم تصاویر حداکثر میتواند ${
-                    options.maxSize / 1000000
-                  } مگابایت باشد`
-                )
-              );
-              return true;
-            }
-
-            event.preventDefault();
-
-            const coordinates = view.posAtCoords({
-              left: event.clientX,
-              top: event.clientY,
-            });
-
-            compressImage(image, (result) => {
-              const reader = new FileReader();
-
-              reader.onload = (readerEvent) => {
-                schema;
-                const node = schema.nodes.figure.create({
-                  src: readerEvent.target?.result,
-                });
-
-                if (coordinates && typeof coordinates.pos === "number") {
-                  const transaction = tr.insert(coordinates?.pos, node);
-
-                  dispatch(transaction);
-                }
-              };
-
-              reader.readAsDataURL(result);
-            });
-
-            return true;
-          },
-          handlePaste(view, event) {
-            if (!event.clipboardData?.files?.length) {
-              return false;
-            }
-
-            const {
-              state: { schema, tr },
-              dispatch,
-            } = view;
-
-            const image = Array.from(event.clipboardData.files).find((file) =>
-              /image/i.test(file.type)
-            );
-
-            if (!image) return false;
-
-            console.log("image: ", image);
-
-            if (image.size > options.maxSize) {
-              options.onError(
-                new Error(
-                  `حجم تصاویر حداکثر میتواند ${
-                    options.maxSize / 1000000
-                  } مگابایت باشد`
-                )
-              );
-              return true;
-            }
-
-            event.preventDefault();
-
-            compressImage(image, (result) => {
-              const reader = new FileReader();
-
-              reader.onload = (readerEvent) => {
-                schema;
-                const node = schema.nodes.figure.create({
-                  src: readerEvent.target?.result,
-                });
-
-                const transaction = tr.replaceSelectionWith(node);
-
-                dispatch(transaction);
-              };
-
-              reader.readAsDataURL(result);
-            });
-
-            return true;
-          },
         },
       }),
     ];
