@@ -1,5 +1,6 @@
 import { Editor } from "@tiptap/core";
 import BubbleMenuExtension from "@tiptap/extension-bubble-menu";
+import Blockquote from "@tiptap/extension-blockquote";
 import CharacterCount from "@tiptap/extension-character-count";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -67,6 +68,7 @@ export const RichTextEditor = () => {
       StarterKit.configure({
         heading: false,
         codeBlock: false,
+        blockquote: false,
       }),
       BubbleMenuExtension,
       CodeBlock,
@@ -79,6 +81,9 @@ export const RichTextEditor = () => {
       CharacterCount,
       TextDirection.configure({
         types: ["paragraph", "heading", "blockquote", "listItem"],
+      }),
+      Blockquote.extend({
+        content: "paragraph*",
       }),
       Link.extend({
         inclusive: false,
