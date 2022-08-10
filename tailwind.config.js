@@ -308,6 +308,42 @@ let defaultModifiers = {
       },
     ],
   },
+  invert: {
+    css: {
+      "--tw-prose-bold": "inherit",
+      "--tw-prose-invert-bold": "inherit",
+    },
+  },
+  slate: {
+    css: {
+      "--tw-prose-bold": "inherit",
+      "--tw-prose-invert-bold": "inherit",
+    },
+  },
+  gray: {
+    css: {
+      "--tw-prose-bold": "inherit",
+      "--tw-prose-invert-bold": "inherit",
+    },
+  },
+  zinc: {
+    css: {
+      "--tw-prose-bold": "inherit",
+      "--tw-prose-invert-bold": "inherit",
+    },
+  },
+  neutral: {
+    css: {
+      "--tw-prose-bold": "inherit",
+      "--tw-prose-invert-bold": "inherit",
+    },
+  },
+  stone: {
+    css: {
+      "--tw-prose-bold": "inherit",
+      "--tw-prose-invert-bold": "inherit",
+    },
+  },
 };
 
 const customTypography = {
