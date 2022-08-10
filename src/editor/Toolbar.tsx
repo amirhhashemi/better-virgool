@@ -152,7 +152,6 @@ const ToolbarImageInput = ({ editor }: { editor: Editor }) => {
       return;
     }
 
-    // TODO: filter file type
     const file = e.target.files[0];
 
     if (!file) {
@@ -171,31 +170,86 @@ const ToolbarImageInput = ({ editor }: { editor: Editor }) => {
       return;
     }
 
-    new Compressor(file, {
-      quality: 0.8,
-      success: (result) => {
-        const reader = new FileReader();
+    const arrayBufferReader = new FileReader();
 
-        reader.onload = (e: ProgressEvent<FileReader>) => {
-          if (e.target?.result) {
-            editor
-              .chain()
-              .focus()
-              .setFigure({ src: e.target.result as string })
-              .run();
-          }
-        };
+    arrayBufferReader.onload = (e) => {
+      if (!e.target?.result) {
+        return;
+      }
 
-        reader.onerror = () => {
+      const imageMimes = [
+        {
+          mime: "image/png",
+          pattern: [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a],
+        },
+        {
+          mime: "image/jpeg",
+          pattern: [0xff, 0xd8, 0xff],
+        },
+        {
+          mime: "image/gif",
+          pattern: [0x47, 0x49, 0x46, 0x38],
+        },
+        {
+          mime: "image/webp",
+          pattern: [
+            0x52,
+            0x49,
+            0x46,
+            0x46,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            0x57,
+            0x45,
+            0x42,
+            0x50,
+            0x56,
+            0x50,
+          ],
+        },
+      ];
+
+      const bytes = new Uint8Array(e.target.result as ArrayBuffer);
+
+      const valid = imageMimes.some((mime) =>
+        mime.pattern.every((p, i) => !p || bytes[i] === p),
+      );
+
+      if (!valid) {
+        toast.error("تنها فایل های png, jpeg, gif و webp قابل آپلود هستند");
+        return;
+      }
+
+      new Compressor(file, {
+        quality: 0.8,
+        success: (result) => {
+          const reader = new FileReader();
+
+          reader.onload = (e: ProgressEvent<FileReader>) => {
+            if (e.target?.result) {
+              editor
+                .chain()
+                .focus()
+                .setFigure({ src: e.target.result as string })
+                .run();
+            }
+          };
+
+          reader.onerror = () => {
+            toast.error("برگذاری فایل ناموفق بود لطفا دوباره امتحان کنید");
+          };
+
+          reader.readAsDataURL(result);
+        },
+        error: () => {
           toast.error("برگذاری فایل ناموفق بود لطفا دوباره امتحان کنید");
-        };
+        },
+      });
+    };
 
-        reader.readAsDataURL(result);
-      },
-      error: () => {
-        toast.error("برگذاری فایل ناموفق بود لطفا دوباره امتحان کنید");
-      },
-    });
+    arrayBufferReader.readAsArrayBuffer(file.slice(0, 14));
   };
 
   const handleInputClick = () => {
