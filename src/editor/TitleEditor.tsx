@@ -54,6 +54,7 @@ export const TitleEditor = () => {
       <EditorContent editor={editor} />
       <div className="text-gray-400 float-left">
         {/* TODO: use farsi digits */}
+        {/* eslint-disable-next-line */}
         {editor.storage.characterCount.characters()}/{CHAR_LIMIT} کاراکتر
       </div>
     </div>

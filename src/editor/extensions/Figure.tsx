@@ -176,7 +176,7 @@ const FigureWrapper = ({ node, deleteNode }: NodeViewProps) => {
   return (
     <NodeViewWrapper className="flex justify-center" data-type="figure">
       <figure className="relative group">
-        {node.attrs.src && <img src={node.attrs.src} alt="Image" />}
+        {node.attrs.src && <img src={node.attrs.src as string} alt="Image" />}
         {/* TODO: sync alt with caption */}
         <NodeViewContent as="figcaption" className="text-center" dir="auto" />
         <button
@@ -184,7 +184,7 @@ const FigureWrapper = ({ node, deleteNode }: NodeViewProps) => {
             "w-8 h-8 p-2 z-20",
             "absolute top-2 right-2 flex items-center justify-center",
             "opacity-0 group-hover:opacity-100 bg-gray-800 hover:bg-gray-700 text-rose-500 rounded",
-            "ease-in-out transition duration-200"
+            "ease-in-out transition duration-200",
           )}
           onClick={() => deleteNode()}
         >

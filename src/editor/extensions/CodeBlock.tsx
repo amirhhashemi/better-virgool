@@ -27,6 +27,7 @@ const CodeBlockWrapper = ({ updateAttributes, extension }: NodeViewProps) => {
         onChange={(event) => updateAttributes({ language: event.target.value })}
       >
         <option value="null">auto</option>
+        {/* eslint-disable-next-line */}
         {extension.options.lowlight
           .listLanguages()
           .map((lang: string, index: number) => (

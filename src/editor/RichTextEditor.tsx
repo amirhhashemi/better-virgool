@@ -44,10 +44,11 @@ const BubbleMenu = ({ editor }: { editor: Editor }) => {
         </button>
         <a
           dir="ltr"
-          href={editor.getAttributes("link").href}
+          href={editor.getAttributes("link").href || undefined}
           target="_blank"
           className="!cursor-pointer !text-white"
         >
+          {/* eslint-disable-next-line */}
           {editor.getAttributes("link").href?.substring(0, 15) + "..."}
         </a>
       </div>
@@ -108,11 +109,12 @@ export const RichTextEditor = () => {
           "mt-6 mx-auto px-1 sm:px-2 pb-4",
           "prose prose-sm sm:prose-base md:prose-md prose-stone",
           "prose-img:mb-2 prose-img:rounded prose-figcaption:text-center",
-          "prose-a:text-rose-500"
+          "prose-a:text-rose-500",
         )}
       >
         <EditorContent editor={editor} />
         <div className="text-gray-400 float-left">
+          {/* eslint-disable-next-line */}
           {editor.storage.characterCount.words()} کلمه
         </div>
       </div>

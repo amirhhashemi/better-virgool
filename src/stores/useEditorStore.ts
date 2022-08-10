@@ -15,9 +15,9 @@ interface EditorStore {
 
 const IDBStorage: StateStorage = {
   getItem: async (name) => {
-    return (await get(name)) || null;
+    return (await get(name)) ?? null;
   },
-  setItem: _debounce(async (name, value) => {
+  setItem: _debounce(async (name: string, value: string) => {
     const parsed = JSON.parse(value);
     const newValue = JSON.stringify({ ...parsed, lastUpdate: new Date() });
     await set(name, newValue);
@@ -51,8 +51,8 @@ export const useEditorStore = create<EditorStore>()(
         titleHtml: s.titleHtml,
         contentHtml: s.contentHtml,
       }),
-    }
-  )
+    },
+  ),
 );
 
 export const useEditorHydration = () => {
@@ -60,7 +60,7 @@ export const useEditorHydration = () => {
 
   useEffect(() => {
     const unsubFinishHydration = useEditorStore.persist.onFinishHydration(() =>
-      setHydrated(true)
+      setHydrated(true),
     );
 
     setHydrated(useEditorStore.persist.hasHydrated());

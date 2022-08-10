@@ -57,7 +57,7 @@ export const TextDirection = Extension.create<TextDirectionOptions>({
           }
 
           return this.options.types.every((type) =>
-            commands.updateAttributes(type, { dir: direction })
+            commands.updateAttributes(type, { dir: direction }),
           );
         },
     };

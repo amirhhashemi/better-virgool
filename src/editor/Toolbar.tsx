@@ -41,7 +41,7 @@ const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonProps>(
       "flex items-center justify-center",
       "outline-none rounded font-bold border-transparent hover:border-rose-500 hover:border",
       "ease-in-out transition duration-200",
-      isActive ? "bg-rose-500" : "bg-black"
+      isActive ? "bg-rose-500" : "bg-black",
     );
 
     return (
@@ -50,7 +50,7 @@ const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonProps>(
         {children}
       </button>
     );
-  }
+  },
 );
 
 interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -119,7 +119,7 @@ const ToolbarLinkToggler = ({ editor }: { editor: Editor }) => {
         <div className="relative z-50">
           <input
             dir="ltr"
-            value={link || ""}
+            value={link ?? ""}
             onChange={(e) => setLink(e.target.value)}
             className="w-full py-2 pl-2 pr-14 text-sm text-black border-2 border-gray-200 rounded-lg"
             onKeyDown={(e) => {
@@ -153,15 +153,19 @@ const ToolbarImageInput = ({ editor }: { editor: Editor }) => {
     }
 
     // TODO: filter file type
-    const file = e.target?.files[0]!;
+    const file = e.target.files[0];
+
+    if (!file) {
+      return;
+    }
 
     if (imageInputRef.current) {
       imageInputRef.current.value = "";
     }
 
-    if (file && file.size > MAX_IMAGE_SIZE_IN_MB * 1000000) {
+    if (file.size > MAX_IMAGE_SIZE_IN_MB * 1000000) {
       toast.error(
-        `حجم تصاویر حداکثر میتواند ${MAX_IMAGE_SIZE_IN_MB} مگابایت باشد`
+        `حجم تصاویر حداکثر میتواند ${MAX_IMAGE_SIZE_IN_MB} مگابایت باشد`,
       );
 
       return;
@@ -172,7 +176,7 @@ const ToolbarImageInput = ({ editor }: { editor: Editor }) => {
       success: (result) => {
         const reader = new FileReader();
 
-        reader.onload = async (e: ProgressEvent<FileReader>) => {
+        reader.onload = (e: ProgressEvent<FileReader>) => {
           if (e.target?.result) {
             editor
               .chain()
@@ -208,7 +212,7 @@ const ToolbarImageInput = ({ editor }: { editor: Editor }) => {
         className={cn(
           "w-full py-2 px-4",
           "hidden rounded rounded-8 border focus:outline-none bg-gray-100",
-          "placeholder:text-right"
+          "placeholder:text-right",
         )}
       />
     </ToolbarButton>
