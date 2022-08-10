@@ -1,5 +1,5 @@
-import TiptapHeading, { HeadingOptions } from "@tiptap/extension-heading";
 import { textblockTypeInputRule } from "@tiptap/core";
+import TiptapHeading, { HeadingOptions } from "@tiptap/extension-heading";
 
 export const Heading = TiptapHeading.extend<HeadingOptions>({
   addInputRules() {

@@ -1,5 +1,5 @@
 import { Extension, findChildren } from "@tiptap/core";
-import { Transaction, Plugin, PluginKey } from "prosemirror-state";
+import { Plugin, PluginKey, Transaction } from "prosemirror-state";
 
 export type Direction = "ltr" | "rtl";
 
@@ -106,14 +106,13 @@ export function TextDirectionPlugin({
       let modified = false;
 
       if (transactions.some((transaction) => transaction.docChanged)) {
-        const nodes = findChildren(newState.doc, (node) =>
-          types.includes(node.type.name)
-        );
+        const nodes = findChildren(newState.doc, (node) => {
+          return types.includes(node.type.name);
+        });
 
         nodes.forEach((block) => {
           const { node, pos } = block;
           const { attrs, textContent } = node;
-          // console.log("node: ", node);
 
           if (Boolean(attrs && attrs.dir) && textContent.length !== 0) {
             return;

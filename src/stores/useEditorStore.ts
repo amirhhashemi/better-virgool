@@ -1,9 +1,8 @@
-import create from "zustand";
+import { del, get, set } from "idb-keyval";
 import _debounce from "lodash.debounce";
-
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import create from "zustand";
 import { persist, StateStorage } from "zustand/middleware";
-import { get, set, del } from "idb-keyval";
 
 interface EditorStore {
   contentHtml: string;

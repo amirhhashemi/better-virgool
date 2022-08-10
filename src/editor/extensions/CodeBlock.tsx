@@ -1,9 +1,21 @@
-import { NodeViewWrapper, NodeViewProps, NodeViewContent } from "@tiptap/react";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import {
+  NodeViewContent,
+  NodeViewProps,
+  NodeViewWrapper,
+  ReactNodeViewRenderer,
+} from "@tiptap/react";
+import { lowlight } from "lowlight/lib/common.js";
 
-export const CodeBlockWrapper = ({
-  updateAttributes,
-  extension,
-}: NodeViewProps) => {
+export const CodeBlock = CodeBlockLowlight.extend({
+  addNodeView() {
+    return ReactNodeViewRenderer(CodeBlockWrapper);
+  },
+}).configure({
+  lowlight,
+});
+
+const CodeBlockWrapper = ({ updateAttributes, extension }: NodeViewProps) => {
   return (
     <NodeViewWrapper className="relative" dir="ltr">
       <pre spellCheck={false}>

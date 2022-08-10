@@ -1,18 +1,21 @@
 import {
-  mergeAttributes,
-  nodeInputRule,
   defaultBlockAt,
+  mergeAttributes,
   Node,
+  nodeInputRule,
 } from "@tiptap/core";
-import { ReactNodeViewRenderer } from "@tiptap/react";
+import {
+  NodeViewContent,
+  NodeViewProps,
+  NodeViewWrapper,
+  ReactNodeViewRenderer,
+} from "@tiptap/react";
+import cn from "clsx";
 import { Selection } from "prosemirror-state";
-
-import { FigureWrapper } from "../wrappers/Figure";
+import { Trash } from "~/icons";
 
 interface FigureOptions {
   HTMLAttributes: Record<string, any>;
-  maxSize: number;
-  onError: (err: Error) => void;
 }
 
 declare module "@tiptap/core" {
@@ -23,23 +26,22 @@ declare module "@tiptap/core" {
   }
 }
 
-export const inputRegex = /!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\)/;
-export const maxSize = 3000000;
+const inputRegex = /!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\)/;
 
+// TODO: add placeholder
 export const Figure = Node.create<FigureOptions>({
   name: "figure",
+  inline: false,
   group: "block",
   content: "inline*",
   draggable: true,
-  selectable: false,
+  selectable: true,
   isolating: true,
   marks: "",
 
   addOptions() {
     return {
       HTMLAttributes: {},
-      maxSize,
-      onError: (err: Error) => console.error(err),
     };
   },
 
@@ -169,3 +171,26 @@ export const Figure = Node.create<FigureOptions>({
     return ReactNodeViewRenderer(FigureWrapper);
   },
 });
+
+const FigureWrapper = ({ node, deleteNode }: NodeViewProps) => {
+  return (
+    <NodeViewWrapper className="flex justify-center" data-type="figure">
+      <figure className="relative group">
+        {node.attrs.src && <img src={node.attrs.src} alt="Image" />}
+        {/* TODO: sync alt with caption */}
+        <NodeViewContent as="figcaption" className="text-center" dir="auto" />
+        <button
+          className={cn(
+            "w-8 h-8 p-2 z-20",
+            "absolute top-2 right-2 flex items-center justify-center",
+            "opacity-0 group-hover:opacity-100 bg-gray-800 hover:bg-gray-700 text-rose-500 rounded",
+            "ease-in-out transition duration-200"
+          )}
+          onClick={() => deleteNode()}
+        >
+          <Trash size={"1.2rem"} />
+        </button>
+      </figure>
+    </NodeViewWrapper>
+  );
+};
