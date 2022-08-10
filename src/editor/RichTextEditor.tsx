@@ -112,7 +112,7 @@ export const RichTextEditor = () => {
       <div
         className={cn(
           "mt-6 mx-auto px-1 sm:px-2 pb-4",
-          "prose prose-sm sm:prose-base md:prose-md prose-stone",
+          "prose prose-sm sm:prose-base md:prose-md",
           "prose-img:mb-2 prose-img:rounded prose-figcaption:text-center",
           "prose-a:text-rose-500",
         )}
