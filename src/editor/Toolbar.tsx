@@ -1,4 +1,5 @@
 import * as Popover from "@radix-ui/react-popover";
+import * as Tooltip from "@radix-ui/react-tooltip";
 import { Editor } from "@tiptap/react";
 import cn from "clsx";
 import Compressor from "compressorjs";
@@ -32,10 +33,11 @@ const MAX_IMAGE_SIZE_IN_MB = 4;
 interface ToolbarButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   icon?: React.ReactNode;
   isActive?: boolean;
+  tooltip?: string;
 }
 
 const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonProps>(
-  ({ children, icon, isActive, ...rest }, ref) => {
+  ({ children, icon, isActive, tooltip, ...rest }, ref) => {
     const classes = cn(
       "w-8 h-8 p-2",
       "flex items-center justify-center",
@@ -45,10 +47,23 @@ const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonProps>(
     );
 
     return (
-      <button ref={ref} className={classes} {...rest}>
-        <span className="m-2 flex items-center">{icon}</span>
-        {children}
-      </button>
+      <Tooltip.Provider>
+        <Tooltip.Root>
+          <Tooltip.Trigger asChild>
+            <button ref={ref} className={classes} {...rest}>
+              <span className="m-2 flex items-center">{icon}</span>
+              {children}
+            </button>
+          </Tooltip.Trigger>
+          {tooltip && (
+            <Tooltip.Content sideOffset={10}>
+              <div className="text-red-300 text-sm opacity-90 px-2 py-1 rounded bg-gray-800">
+                {tooltip}
+              </div>
+            </Tooltip.Content>
+          )}
+        </Tooltip.Root>
+      </Tooltip.Provider>
     );
   },
 );
@@ -113,7 +128,11 @@ const ToolbarLinkToggler = ({ editor }: { editor: Editor }) => {
       }}
     >
       <Popover.Trigger asChild>
-        <ToolbarButton isActive={editor.isActive("link")} icon={<Link />} />
+        <ToolbarButton
+          tooltip="لینک"
+          isActive={editor.isActive("link")}
+          icon={<Link />}
+        />
       </Popover.Trigger>
       <Popover.Content>
         <div className="relative z-50">
@@ -257,7 +276,11 @@ const ToolbarImageInput = ({ editor }: { editor: Editor }) => {
   };
 
   return (
-    <ToolbarButton icon={<ImageAdd />} onClick={handleInputClick}>
+    <ToolbarButton
+      tooltip="تصویر"
+      icon={<ImageAdd />}
+      onClick={handleInputClick}
+    >
       <input
         ref={imageInputRef}
         type="file"
@@ -279,12 +302,14 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
       <div className="flex flex-wrap items-center justify-center gap-x-3 bg-black text-white p-2 sticky top-0 z-50">
         <ToolbarButtonGroup>
           <ToolbarButton
+            tooltip="راست به چپ"
             isActive={editor.isActive({ dir: "rtl" })}
             onClick={() => editor.chain().focus().setTextDirection("rtl").run()}
             icon={<TextRtl />}
           />
 
           <ToolbarButton
+            tooltip="چپ به راست"
             isActive={editor.isActive({ dir: "ltr" })}
             onClick={() => editor.chain().focus().setTextDirection("ltr").run()}
             icon={<TextLtr />}
@@ -293,6 +318,7 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
 
         <ToolbarButtonGroup>
           <ToolbarButton
+            tooltip="جدا کننده"
             isActive={editor.isActive("horizontalRule")}
             onClick={() =>
               editor.chain().focus().setHorizontalRule().enter().run()
@@ -305,24 +331,28 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
 
         <ToolbarButtonGroup>
           <ToolbarButton
+            tooltip="فهرست نقطه ای (Ctrl+Shift+8)"
             isActive={editor.isActive("bulletList")}
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             icon={<UnorderedList />}
           />
 
           <ToolbarButton
+            tooltip="فهرست شماره گذاری شده (Ctrl+Shift+7)"
             isActive={editor.isActive("orderedList")}
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
             icon={<OrderedList />}
           />
 
           <ToolbarButton
+            tooltip="کد (Ctrl+Alt+C)"
             isActive={editor.isActive("codeBlock")}
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
             icon={<Code />}
           />
 
           <ToolbarButton
+            tooltip="نقل‌قول (Ctrl+Shift+B)"
             isActive={editor.isActive("blockquote")}
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
             icon={<Blockquote />}
@@ -331,6 +361,7 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
 
         <ToolbarButtonGroup>
           <ToolbarButton
+            tooltip="عنوان ۲ (Ctrl+Alt+2)"
             isActive={editor.isActive("heading", { level: 2 })}
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 2 }).run()
@@ -339,6 +370,7 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
           />
 
           <ToolbarButton
+            tooltip="عنوان ۳ (Ctrl+Alt+3)"
             isActive={editor.isActive("heading", { level: 3 })}
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 3 }).run()
@@ -347,6 +379,7 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
           />
 
           <ToolbarButton
+            tooltip="عنوان ۴ (Ctrl+Alt+4)"
             isActive={editor.isActive("heading", { level: 4 })}
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 4 }).run()
@@ -357,36 +390,42 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
 
         <ToolbarButtonGroup>
           <ToolbarButton
+            tooltip="توان (.+Ctrl)"
             isActive={editor.isActive("superscript")}
             onClick={() => editor.chain().focus().toggleSuperscript().run()}
             icon={<Superscript />}
           />
 
           <ToolbarButton
+            tooltip="فرجه (,+Ctrl)"
             isActive={editor.isActive("subscript")}
             onClick={() => editor.chain().focus().toggleSubscript().run()}
             icon={<Subscript />}
           />
 
           <ToolbarButton
+            tooltip="ضخیم (Ctrl+B)"
             isActive={editor.isActive("bold")}
             onClick={() => editor.chain().focus().toggleBold().run()}
             icon={<Bold />}
           />
 
           <ToolbarButton
+            tooltip="تاکید (Ctrl+I)"
             isActive={editor.isActive("italic")}
             onClick={() => editor.chain().focus().toggleItalic().run()}
             icon={<Italic />}
           />
 
           <ToolbarButton
+            tooltip="خط زیر (Ctrl+U)"
             isActive={editor.isActive("underline")}
             onClick={() => editor.chain().focus().toggleUnderline().run()}
             icon={<Underline />}
           />
 
           <ToolbarButton
+            tooltip="خط رو! (Ctrl+X)"
             isActive={editor.isActive("strike")}
             onClick={() => editor.chain().focus().toggleStrike().run()}
             icon={<Strikethrough />}
