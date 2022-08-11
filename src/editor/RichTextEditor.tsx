@@ -119,7 +119,7 @@ export const RichTextEditor = () => {
         )}
       >
         <EditorContent editor={editor} />
-        <div className="text-gray-400 float-left">
+        <div className="text-gray-400">
           {/* eslint-disable-next-line */}
           {editor.storage.characterCount.words()} کلمه
         </div>
