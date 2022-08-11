@@ -80,6 +80,7 @@ export const RichTextEditor = () => {
       SmilieReplacer,
       CharacterCount,
       TextDirection.configure({
+        defaultDirection: "rtl",
         types: ["paragraph", "heading", "blockquote", "listItem"],
       }),
       Blockquote.extend({
